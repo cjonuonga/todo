@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv, find_dotenv
-from todo import *
+
 
 load_dotenv(find_dotenv())
 password = os.environ.get("MONGODB_PWD")
@@ -34,6 +34,10 @@ def remove_task():
 
     todo_collection.delete_one({"_id": latest_task["_id"]})
     
+
+def view_tasks():
+    tasks = todo_collection.find()
+    return tasks
 
 
 

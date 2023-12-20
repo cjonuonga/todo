@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from td_backend import *
+from td_backend import insert_task, remove_task, view_tasks
 
 class toDo():
     def __init__(self):
@@ -19,8 +19,8 @@ class toDo():
 
 
         # Entries
-        self.entry_text = StringVar()
-        self.e1 = Entry(self.window, textvariable=self.entry_text)
+        self.task_text = StringVar()
+        self.e1 = Entry(self.window, textvariable=self.task_text)
         self.e1.grid(row=0, column=2)
 
         self.date_text = StringVar()
@@ -30,6 +30,7 @@ class toDo():
         # Listbox & Scrollbar
         self.list1 = Listbox(self.window, height=6, width=35)
         self.list1.grid(row=1, column=0, rowspan=7, columnspan=7)
+        #self.list1.insert(END, self.task_text, self.date_text)
 
         self.sb1 = Scrollbar(self.window)
         self.sb1.grid(row=2, column=7, rowspan=7)
@@ -44,7 +45,7 @@ class toDo():
         self.b2 = Button(self.window, text="Delete", width=5, command=self.delete_task)
         self.b2.grid(row=0, column=6)
 
-        self.b3 = Button(self.window, text="view",width=5)
+        self.b3 = Button(self.window, text="view",width=5, command=self.view_tasks)
         self.b3.grid(row=0, column=7)
 
 
@@ -55,7 +56,15 @@ class toDo():
 
     def delete_task(self):
         remove_task()
+    
+    def view_tasks(self):
+        tasks = view_tasks()
+        self.list1.delete(0, END)
+        for task in tasks:
+            self.list1.insert(END, f"Task: {task['task']} - Date: {task['date']}")
+    
 
+    
 
     def pushtostart(self):
         self.window.mainloop()
