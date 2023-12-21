@@ -39,23 +39,31 @@ class toDo():
         self.sb1.configure(command=self.list1.yview) # moves screen up and down within the listbox
         
         # Buttons
-        self.b1 = Button(self.window, text="Add", width=5, command=self.add_task)
+        self.b1 = Button(self.window, text="Add", width=5, command=lambda:[self.add_task(), self.delete_entries()])
         self.b1.grid(row=0, column=5)
 
         self.b2 = Button(self.window, text="Delete", width=5, command=self.delete_task)
         self.b2.grid(row=0, column=6)
 
-        self.b3 = Button(self.window, text="view",width=5, command=self.view_tasks)
-        self.b3.grid(row=0, column=7)
-
+        self.view_tasks()
 
     def add_task(self):
         addT = self.e1.get()
         addD = self.e2.get()
+        tasks = view_tasks()
         insert_task(addT, addD)
+        self.list1.delete(0,END)
+        for task in tasks:
+            self.list1.insert(END, f"Task: {task['task']} - Date: {task['date']}")
+        
+
+    def delete_entries(self):
+        self.e1.delete(0,END)
+        self.e2.delete(0,END)
 
     def delete_task(self):
         remove_task()
+        self.list1.delete(END)
     
     def view_tasks(self):
         tasks = view_tasks()
